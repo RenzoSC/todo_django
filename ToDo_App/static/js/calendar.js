@@ -11,6 +11,11 @@ function renderCalendar(date){
     let body_calendar = document.getElementById('cal-body-content');
     let templateCells = '';
 
+    const span = document.getElementById("date_cal");
+    const month = date.format("MMM");
+    const year = date.format("YYYY");
+    span.textContent = `${month} ${year}`;
+
     let x=0;
     templateCells+=`<div class="row justify-content-between p-0 d-flex align-items-end" id="cal-body-head">
         <div class="col-1 text-center cal-day p-0">Lun</div>
@@ -26,12 +31,12 @@ function renderCalendar(date){
         for(let j=0; j <7; j++){
             if(cells[x].date.date()== moment().get('date') && cells[x].isInCurrentMonth){
                 selectedDate = cells[x].date;
-                templateCells += `<div class="col-1 cal-day d-flex justify-content-center align-items-center select" >${cells[x].date.date()}</div>`;
+                templateCells += `<div class="col-1 cal-day d-flex justify-content-center align-items-center day-selectable select " data-cell-id="${x}">${cells[x].date.date()}</div>`;
             }else{
                 if(cells[x].isInCurrentMonth){
-                    templateCells += `<div class="col-1 cal-day d-flex justify-content-center align-items-center day-selectable">${cells[x].date.date()}</div>`;
+                    templateCells += `<div class="col-1 cal-day d-flex justify-content-center align-items-center day-selectable "data-cell-id="${x}">${cells[x].date.date()}</div>`;
                 }else{
-                    templateCells += `<div class="col-1 cal-day d-flex justify-content-center align-items-center day-no-selectable">${cells[x].date.date()}</div>`;
+                    templateCells += `<div class="col-1 cal-day d-flex justify-content-center align-items-center day-no-selectable "data-cell-id="${x}">${cells[x].date.date()}</div>`;
                 }
             }
             x++;
@@ -39,6 +44,27 @@ function renderCalendar(date){
         templateCells += `</div>`;
     }
     body_calendar.innerHTML = templateCells;
+
+    /*Aca agregamos event listeners a las cells */
+    let html_cells = body_calendar.querySelectorAll('.day-selectable');
+    html_cells.forEach(cell =>{
+        cell.addEventListener('click', e =>{
+            let target_cell = e.target;
+            let last_select = document.querySelector(".select");
+            last_select.classList.remove("select");
+            target_cell.classList.add("select");
+            
+            selectedDate = cells[parseInt(target_cell.dataset.cellId)].date; //cambio el selectedDate
+            
+        })
+    })
+
+    /*Acá agregamos los listener a los botones de navegacion del header del cal*/
+
+    let nav_head_btns = document.querySelectorAll(".cal-nav");
+    nav_head_btns.forEach(btn=>{
+        btn.addEventListener('click',handleNavButtonClick);
+    });
 }
 
 function generateDates(monthToShow=moment()){
@@ -69,6 +95,13 @@ function generateDates(monthToShow=moment()){
     return cells;
 }
 
-function selectListener(){
-    
-}
+function handleNavButtonClick(e) {
+    let target_btn = e.target;
+
+    if (target_btn.id == "prev-btn") {
+      date.subtract(1, "months");
+    } else {
+      date.add(1, "months");
+    }
+    renderCalendar(date);
+  }
