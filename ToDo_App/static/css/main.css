@@ -1,0 +1,31 @@
+#cal-body{
+    max-width: 700px;
+    max-height: 700px;
+    width: 500px;
+    height: 500px;
+}
+
+
+.cal-nav{
+    width: 90px;
+}
+
+.cal-day{
+    width: 50px;
+    height: 50px;
+}
+.day-selectable, .select{
+    cursor: pointer;
+}
+.day-selectable:hover{
+    background-color: #0d6efd;
+    color: antiquewhite;
+    border-radius: 50%;
+}
+.select{
+    border: 5px solid #0d6efd;
+    border-radius: 50%;
+}
+.day-no-selectable{
+    cursor: not-allowed;
+}
