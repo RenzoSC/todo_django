@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class Date(models.Model):
-    date = models.DateField(auto_now=True) 
+    date = models.DateField(unique=True) 
 
 class Task(models.Model):
     title= models.CharField(max_length=70)
