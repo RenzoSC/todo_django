@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
 </head>
 <body>
-    <div class="container">
-        <div id="calendar-container" class="mt-4">
+    <div class="app-container row">
+        <div id="calendar-container" class="mt-4 col">
             <div class="p-3"id="calendar-cont">
                 <div class="d-flex justify-content-center" id="cal-head-nav">
                     <button type="button" class="btn btn-outline-primary text-center cal-nav mx-4" id="prev-btn" >Previous</button>
@@ -25,14 +25,36 @@
                 </div>
             </div>
         </div>
-        <div id="todo-container">
-            <form method="POST">
+        <div id="todo-container" class="col container d-flex h-100 flex-column mt-4 me-4">
+            <div class="row h-75">
+                <div class="task-container d-flex flex-column">
+                    <!-- <div class="task-item my-2 p-2 overflow-auto">   
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo provident quibusdam obcaecati distinctio voluptatibus placeat reiciendis veniam, architecto ullam sapiente. Incidunt natus possimus ex animi illum autem minima aliquam mollitia?Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet recusandae molestias veritatis soluta non reiciendis repellendus nam? Vel repellendus ut fuga deleniti. Quae minus neque qui cum, rem perferendis esse?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod asperiores, minima ipsa ratione porro distinctio nostrum, in laudantium inventore eveniet atque culpa, explicabo quasi labore maxime cupiditate incidunt vitae possimus!
+                    </div>
+                    <div class="task-item my-2 p-2">   
+                        a
+                    </div>
+                    <div class="task-item my-2 p-2">   
+                        a
+                    </div> -->
+                    {% for task in tasks %}
+                    <div class="task-item my-2 p-2 overflow-auto">
+                        <h1>{{task.title}}</h1>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row flex-grow-1 justify-content-center py-4">
+                <button type="button" class="btn btn-danger text-center cal-nav m-4" id="del-btn" >Eliminate</button>
+                <button type="button" class="btn btn-primary text-center cal-nav m-4" id="create-btn" >Create</button>
+            </div>
+            <!-- <form method="POST">
                 {% csrf_token %}
                 {{form.as_div}}
                 <button>
                     Save
                 </button>
-            </form>
+            </form> -->
         </div>
     </div>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>

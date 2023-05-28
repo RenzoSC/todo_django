@@ -1,3 +1,6 @@
+.app-container{
+    height: 600px;
+}
 #cal-body{
     max-width: 700px;
     max-height: 700px;
@@ -28,4 +31,17 @@
 }
 .day-no-selectable{
     cursor: not-allowed;
+}
+
+#todo-container{
+    height: 100%;
+}
+
+#del-btn, #create-btn{
+    width: 140px;
+}
+
+.task-item{
+    min-height: 80px;
+    max-height: 200px;
 }
