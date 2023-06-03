@@ -38,11 +38,15 @@
                         a
                     </div> -->
                     <div id="tasks_items">
-                        {% for task in tasks %}
+                        {% if filtered_tasks %}
+                        {% for task in filtered_tasks %}
                         <div class="task-item my-2 p-2 overflow-auto">
                             <h1>{{task.title}}</h1>
                         </div>
                         {% endfor %}
+                        {% else %}
+                        <h1>caca</h1>
+                        {% endif %}
                     </div>
                     <form method="POST" id="task_form">
                         {% csrf_token %}
@@ -63,6 +67,10 @@
             
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script>
+        var csrfToken = '{{ csrf_token }}';
+    </script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/moment.js' %}"></script>
     <script src="{% static 'js/calendar.js' %}"></script>

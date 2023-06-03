@@ -6,7 +6,7 @@ function renderCalendar(date){
     // let listOfMonths = ['January', 'February', 'March', 'April', 
     // 'May', 'June', 'July', 'August', 'September', 'October',
     // 'November', 'December'];
-    let selectedDate = date;
+    let selectedDate = date.format('YYYY-MM-DD');
     let cells = generateDates(date);
     let body_calendar = document.getElementById('cal-body-content');
     let templateCells = '';
@@ -30,7 +30,7 @@ function renderCalendar(date){
         templateCells += `<div class="row justify-content-between align-items-center text-center p-0">`;
         for(let j=0; j <7; j++){
             if(cells[x].date.date()== moment().get('date') && cells[x].isInCurrentMonth){
-                selectedDate = cells[x].date;
+                selectedDate = cells[x].date.format('YYYY-MM-DD');
                 templateCells += `<div class="col-1 cal-day d-flex justify-content-center align-items-center day-selectable select " data-cell-id="${x}">${cells[x].date.date()}</div>`;
             }else{
                 if(cells[x].isInCurrentMonth){
@@ -54,8 +54,25 @@ function renderCalendar(date){
             last_select.classList.remove("select");
             target_cell.classList.add("select");
             
-            selectedDate = cells[parseInt(target_cell.dataset.cellId)].date; //cambio el selectedDate
-            
+            selectedDate = cells[parseInt(target_cell.dataset.cellId)].date.format('YYYY-MM-DD'); //cambio el selectedDate
+
+            $.ajax({
+                url:'/',
+                type:'POST',
+                data:{
+                    f_date:selectedDate,
+                    csrfmiddlewaretoken: csrfToken,
+                    read_task: true,
+                },
+                success: function(response) {
+                    // Actualizar la sección de tareas en tu página con las tareas obtenidas
+                    console.log(response.filtered_tasks);
+                  },
+                error: function(xhr, status, error) {
+                    console.log('Error en la solicitud AJAX:', error);
+                }
+            })
+
         })
     })
 
@@ -65,6 +82,7 @@ function renderCalendar(date){
     nav_head_btns.forEach(btn=>{
         btn.addEventListener('click',handleNavButtonClick);
     });
+
 }
 
 function generateDates(monthToShow=moment()){
