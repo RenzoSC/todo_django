@@ -37,28 +37,35 @@
                     <div class="task-item my-2 p-2">   
                         a
                     </div> -->
-                    {% for task in tasks %}
-                    <div class="task-item my-2 p-2 overflow-auto">
-                        <h1>{{task.title}}</h1>
+                    <div id="tasks_items">
+                        {% for task in tasks %}
+                        <div class="task-item my-2 p-2 overflow-auto">
+                            <h1>{{task.title}}</h1>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
+                    <form method="POST" id="task_form">
+                        {% csrf_token %}
+                        {{form.as_div}}
+                        <button onclick="end_form()">
+                            Save
+                        </button>
+                        <button onclick="end_form()">
+                            Cancel
+                        </button>
+                    </form>
                 </div>
             </div>
-            <div class="row flex-grow-1 justify-content-center py-4">
-                <button type="button" class="btn btn-danger text-center cal-nav m-4" id="del-btn" >Eliminate</button>
-                <button type="button" class="btn btn-primary text-center cal-nav m-4" id="create-btn" >Create</button>
+            <div class="row flex-grow-1 justify-content-center py-4" id="btn_task">
+                <button type="button" class="btn btn-danger text-center m-4" id="del-btn" >Eliminate</button>
+                <button type="button" class="btn btn-primary text-center m-4" id="create-btn" onclick="create_task()">Create</button>
             </div>
-            <!-- <form method="POST">
-                {% csrf_token %}
-                {{form.as_div}}
-                <button>
-                    Save
-                </button>
-            </form> -->
+            
         </div>
     </div>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/moment.js' %}"></script>
     <script src="{% static 'js/calendar.js' %}"></script>
+    <script src="{% static 'js/tasks.js' %}"></script>
 </body>
 </html>

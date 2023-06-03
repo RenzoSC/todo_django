@@ -3,9 +3,9 @@ var date = moment();
 renderCalendar(date);
     
 function renderCalendar(date){
-    let listOfMonths = ['January', 'February', 'March', 'April', 
-    'May', 'June', 'July', 'August', 'September', 'October',
-    'November', 'December'];
+    // let listOfMonths = ['January', 'February', 'March', 'April', 
+    // 'May', 'June', 'July', 'August', 'September', 'October',
+    // 'November', 'December'];
     let selectedDate = date;
     let cells = generateDates(date);
     let body_calendar = document.getElementById('cal-body-content');
