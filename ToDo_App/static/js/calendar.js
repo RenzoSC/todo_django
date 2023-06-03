@@ -66,7 +66,23 @@ function renderCalendar(date){
                 },
                 success: function(response) {
                     // Actualizar la sección de tareas en tu página con las tareas obtenidas
-                    console.log(response.filtered_tasks);
+                    var tasksContainer = $('#tasks_items');
+
+                    // Vaciar el contenedor antes de agregar las nuevas tareas
+                    tasksContainer.empty();
+
+                    // Iterar sobre las tareas filtradas y crear los divs correspondientes
+                    for (var i = 0; i < response.filtered_tasks.length; i++) {
+                        var task = response.filtered_tasks[i];
+                        var taskDiv = $('<div class="task-item my-2 p-2 overflow-auto"></div>');
+                        var taskTitle = $('<h1>' + task.title + '</h1>');
+                        
+                        // Agregar el título al div de la tarea
+                        taskDiv.append(taskTitle);
+
+                        // Agregar el div de la tarea al contenedor
+                        tasksContainer.append(taskDiv);
+                    }
                   },
                 error: function(xhr, status, error) {
                     console.log('Error en la solicitud AJAX:', error);
