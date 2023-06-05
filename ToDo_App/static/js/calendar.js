@@ -1,7 +1,53 @@
 
 var date = moment();
 renderCalendar(date);
-    
+
+$.ajax({
+    url:'/',
+    type:'POST',
+    data:{
+        f_date:date.format('YYYY-MM-DD'),
+        csrfmiddlewaretoken: csrfToken,
+        read_task: true,
+    },
+    success: function(response) {
+        // Actualizar la sección de tareas en tu página con las tareas obtenidas
+        var tasksContainer = $('#tasks_items');
+
+        // Vaciar el contenedor antes de agregar las nuevas tareas
+        tasksContainer.empty();
+
+        // Iterar sobre las tareas filtradas y crear los divs correspondientes
+        if(response.filtered_tasks.length >=1){
+            for (var i = 0; i < response.filtered_tasks.length; i++) {
+                var task = response.filtered_tasks[i];
+                var taskDiv = $('<div class="task-item row my-3 p-3 overflow-auto justify-content-between"></div>');
+                let division1 = $('<div class="col-1 flex-grow-1"></div>')
+                var taskTitle = $('<h3>' + task.title + '</h3>');
+                let description = $('<p>' + task.description + '</p>');
+                
+                // Agregar el título al div de la tarea
+                division1.append(taskTitle);
+                division1.append(description);
+                // Agregar el div de la tarea al contenedor
+                taskDiv.append(division1);
+
+                let division2 = $('<div class="col-1"></div>');
+                division2.append($('<button>x</button>'));
+                taskDiv.append(division2);
+                tasksContainer.append(taskDiv);
+            }
+        }else{
+            var no_task = $('<h1>No tasks this day!</h1>')
+            tasksContainer.append(no_task);
+        }
+        
+      },
+    error: function(xhr, status, error) {
+        console.log('Error en la solicitud AJAX:', error);
+    }
+})
+
 function renderCalendar(date){
     // let listOfMonths = ['January', 'February', 'March', 'April', 
     // 'May', 'June', 'July', 'August', 'September', 'October',
@@ -18,13 +64,13 @@ function renderCalendar(date){
 
     let x=0;
     templateCells+=`<div class="row justify-content-between p-0 d-flex align-items-end" id="cal-body-head">
-        <div class="col-1 text-center cal-day p-0">Lun</div>
-        <div class="col-1 text-center cal-day p-0">Mar</div>
-        <div class="col-1 text-center cal-day p-0">Mie</div>
-        <div class="col-1 text-center cal-day p-0">Jue</div>
-        <div class="col-1 text-center cal-day p-0">Vie</div>
-        <div class="col-1 text-center cal-day p-0">Sab</div>
-        <div class="col-1 text-center cal-day p-0">Dom</div>
+        <div class="col-1 text-center cal-dayw p-0">Lun</div>
+        <div class="col-1 text-center cal-dayw p-0">Mar</div>
+        <div class="col-1 text-center cal-dayw p-0">Mie</div>
+        <div class="col-1 text-center cal-dayw p-0">Jue</div>
+        <div class="col-1 text-center cal-dayw p-0">Vie</div>
+        <div class="col-1 text-center cal-dayw p-0">Sab</div>
+        <div class="col-1 text-center cal-dayw p-0">Dom</div>
     </div>`;
     for(let i=0; i<5; i++){
         templateCells += `<div class="row justify-content-between align-items-center text-center p-0">`;
@@ -72,17 +118,30 @@ function renderCalendar(date){
                     tasksContainer.empty();
 
                     // Iterar sobre las tareas filtradas y crear los divs correspondientes
-                    for (var i = 0; i < response.filtered_tasks.length; i++) {
-                        var task = response.filtered_tasks[i];
-                        var taskDiv = $('<div class="task-item my-2 p-2 overflow-auto"></div>');
-                        var taskTitle = $('<h1>' + task.title + '</h1>');
-                        
-                        // Agregar el título al div de la tarea
-                        taskDiv.append(taskTitle);
+                    if(response.filtered_tasks.length >=1){
+                        for (var i = 0; i < response.filtered_tasks.length; i++) {
+                            var task = response.filtered_tasks[i];
+                            var taskDiv = $('<div class="task-item row my-3 p-3 overflow-auto justify-content-between"></div>');
+                            let division1 = $('<div class="col-1 flex-grow-1"></div>')
+                            var taskTitle = $('<h3>' + task.title + '</h3>');
+                            let description = $('<p>' + task.description + '</p>');
+                            
+                            // Agregar el título al div de la tarea
+                            division1.append(taskTitle);
+                            division1.append(description);
+                            // Agregar el div de la tarea al contenedor
+                            taskDiv.append(division1);
 
-                        // Agregar el div de la tarea al contenedor
-                        tasksContainer.append(taskDiv);
+                            let division2 = $('<div class="col-1"></div>');
+                            division2.append($('<button>x</button>'));
+                            taskDiv.append(division2);
+                            tasksContainer.append(taskDiv);
+                        }
+                    }else{
+                        var no_task = $('<h1>No tasks this day!</h1>')
+                        tasksContainer.append(no_task);
                     }
+                    
                   },
                 error: function(xhr, status, error) {
                     console.log('Error en la solicitud AJAX:', error);

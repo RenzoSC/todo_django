@@ -14,7 +14,7 @@
     <div class="app-container row">
         <div id="calendar-container" class="mt-4 col">
             <div class="p-3"id="calendar-cont">
-                <div class="d-flex justify-content-center" id="cal-head-nav">
+                <div class="d-flex justify-content-center align-items-center" id="cal-head-nav">
                     <button type="button" class="btn btn-outline-primary text-center cal-nav mx-4" id="prev-btn" >Previous</button>
                     <span class="d-flex align-items-center mx-2 p-2" id="date_cal"></span>
                     <button type="button" class="btn btn-outline-primary text-center cal-nav mx-4" id="next-btn" >Next</button>
@@ -26,27 +26,9 @@
             </div>
         </div>
         <div id="todo-container" class="col container d-flex h-100 flex-column mt-4 me-4">
-            <div class="row h-75">
-                <div class="task-container d-flex flex-column">
-                    <!-- <div class="task-item my-2 p-2 overflow-auto">   
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo provident quibusdam obcaecati distinctio voluptatibus placeat reiciendis veniam, architecto ullam sapiente. Incidunt natus possimus ex animi illum autem minima aliquam mollitia?Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet recusandae molestias veritatis soluta non reiciendis repellendus nam? Vel repellendus ut fuga deleniti. Quae minus neque qui cum, rem perferendis esse?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod asperiores, minima ipsa ratione porro distinctio nostrum, in laudantium inventore eveniet atque culpa, explicabo quasi labore maxime cupiditate incidunt vitae possimus!
-                    </div>
-                    <div class="task-item my-2 p-2">   
-                        a
-                    </div>
-                    <div class="task-item my-2 p-2">   
-                        a
-                    </div> -->
-                    <div id="tasks_items">
-                        {% if filtered_tasks %}
-                        {% for task in filtered_tasks %}
-                        <div class="task-item my-2 p-2 overflow-auto">
-                            <h1>{{task.title}}</h1>
-                        </div>
-                        {% endfor %}
-                        {% else %}
-                        <h1>caca</h1>
-                        {% endif %}
+            <div class="row h-75 p-3 overflow-auto" id="tasks-display">
+                <div class="task-container d-flex flex-column ">
+                    <div id="tasks_items" class="container">
                     </div>
                     <form method="POST" id="task_form">
                         {% csrf_token %}

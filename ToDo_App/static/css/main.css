@@ -1,3 +1,22 @@
+@font-face {
+    font-family: 'MiFuente-medium';
+    src: url('/static/fonts/LEMONMILK-Medium.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'MiFuente-bold';
+    src: url('/static/fonts/LEMONMILK-Bold.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'MiFuente-regular';
+    src: url('/static/fonts/LEMONMILK-Regular.otf') format('truetype');
+}
+
+body {
+    font-family: 'MiFuente-bold', sans-serif; 
+}
+
 .app-container{
     height: 600px;
 }
@@ -8,15 +27,21 @@
     height: 500px;
 }
 
-
 .cal-nav{
-    width: 90px;
+    width: 110px;
+    height: 50px;
+}
+
+#date_cal{
+    font-size: 40px;
 }
 
 .cal-day{
     width: 50px;
     height: 50px;
+    font-family: 'MiFuente-regular', sans-serif;
 }
+
 .day-selectable{
     cursor: pointer;
 }
@@ -44,7 +69,18 @@
 .task-item{
     min-height: 80px;
     max-height: 200px;
+    border-radius: 20px 20px 20px 20px;
+    -webkit-border-radius: 20px 20px 20px 20px;
+    -moz-border-radius: 20px 20px 20px 20px;
+    border: 3px solid #7b7b7b;
+}
+#tasks-display{
+    border-radius: 20px 20px 20px 20px;
+    -webkit-border-radius: 20px 20px 20px 20px;
+    -moz-border-radius: 20px 20px 20px 20px;
+    border: 3px solid #c6c0c0;
 }
 #task_form{
     display: none;
 }
+
