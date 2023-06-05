@@ -2,51 +2,7 @@
 var date = moment();
 renderCalendar(date);
 
-$.ajax({
-    url:'/',
-    type:'POST',
-    data:{
-        f_date:date.format('YYYY-MM-DD'),
-        csrfmiddlewaretoken: csrfToken,
-        read_task: true,
-    },
-    success: function(response) {
-        // Actualizar la sección de tareas en tu página con las tareas obtenidas
-        var tasksContainer = $('#tasks_items');
-
-        // Vaciar el contenedor antes de agregar las nuevas tareas
-        tasksContainer.empty();
-
-        // Iterar sobre las tareas filtradas y crear los divs correspondientes
-        if(response.filtered_tasks.length >=1){
-            for (var i = 0; i < response.filtered_tasks.length; i++) {
-                var task = response.filtered_tasks[i];
-                var taskDiv = $('<div class="task-item row my-3 p-3 overflow-auto justify-content-between"></div>');
-                let division1 = $('<div class="col-1 flex-grow-1"></div>')
-                var taskTitle = $('<h3>' + task.title + '</h3>');
-                let description = $('<p>' + task.description + '</p>');
-                
-                // Agregar el título al div de la tarea
-                division1.append(taskTitle);
-                division1.append(description);
-                // Agregar el div de la tarea al contenedor
-                taskDiv.append(division1);
-
-                let division2 = $('<div class="col-1"></div>');
-                division2.append($('<button>x</button>'));
-                taskDiv.append(division2);
-                tasksContainer.append(taskDiv);
-            }
-        }else{
-            var no_task = $('<h1>No tasks this day!</h1>')
-            tasksContainer.append(no_task);
-        }
-        
-      },
-    error: function(xhr, status, error) {
-        console.log('Error en la solicitud AJAX:', error);
-    }
-})
+make_petition(date.format('YYYY-MM-DD'));
 
 function renderCalendar(date){
     // let listOfMonths = ['January', 'February', 'March', 'April', 
@@ -102,51 +58,7 @@ function renderCalendar(date){
             
             selectedDate = cells[parseInt(target_cell.dataset.cellId)].date.format('YYYY-MM-DD'); //cambio el selectedDate
 
-            $.ajax({
-                url:'/',
-                type:'POST',
-                data:{
-                    f_date:selectedDate,
-                    csrfmiddlewaretoken: csrfToken,
-                    read_task: true,
-                },
-                success: function(response) {
-                    // Actualizar la sección de tareas en tu página con las tareas obtenidas
-                    var tasksContainer = $('#tasks_items');
-
-                    // Vaciar el contenedor antes de agregar las nuevas tareas
-                    tasksContainer.empty();
-
-                    // Iterar sobre las tareas filtradas y crear los divs correspondientes
-                    if(response.filtered_tasks.length >=1){
-                        for (var i = 0; i < response.filtered_tasks.length; i++) {
-                            var task = response.filtered_tasks[i];
-                            var taskDiv = $('<div class="task-item row my-3 p-3 overflow-auto justify-content-between"></div>');
-                            let division1 = $('<div class="col-1 flex-grow-1"></div>')
-                            var taskTitle = $('<h3>' + task.title + '</h3>');
-                            let description = $('<p>' + task.description + '</p>');
-                            
-                            // Agregar el título al div de la tarea
-                            division1.append(taskTitle);
-                            division1.append(description);
-                            // Agregar el div de la tarea al contenedor
-                            taskDiv.append(division1);
-
-                            let division2 = $('<div class="col-1"></div>');
-                            division2.append($('<button>x</button>'));
-                            taskDiv.append(division2);
-                            tasksContainer.append(taskDiv);
-                        }
-                    }else{
-                        var no_task = $('<h1>No tasks this day!</h1>')
-                        tasksContainer.append(no_task);
-                    }
-                    
-                  },
-                error: function(xhr, status, error) {
-                    console.log('Error en la solicitud AJAX:', error);
-                }
-            })
+            make_petition(selectedDate);
 
         })
     })
@@ -198,3 +110,79 @@ function handleNavButtonClick(e) {
     }
     renderCalendar(date);
   }
+
+function make_petition(selectedDate){
+    $.ajax({
+        url:'/',
+        type:'POST',
+        data:{
+            f_date:selectedDate,
+            csrfmiddlewaretoken: csrfToken,
+            read_task: true,
+        },
+        success: function(response) {
+            // Actualizar la sección de tareas en tu página con las tareas obtenidas
+            var tasksContainer = $('#tasks_items');
+
+            // Vaciar el contenedor antes de agregar las nuevas tareas
+            tasksContainer.empty();
+
+            // Iterar sobre las tareas filtradas y crear los divs correspondientes
+            if(response.filtered_tasks.length >=1){
+                for (var i = 0; i < response.filtered_tasks.length; i++) {
+                    var task = response.filtered_tasks[i];
+                    var taskDiv = $('<div class="task-item row my-3 p-3 overflow-auto justify-content-between"></div>');
+                    let division1 = $('<div class="col-1 flex-grow-1"></div>')
+                    var taskTitle = $('<h3>' + task.title + '</h3>');
+                    let description = $('<p>' + task.description + task.done+ '</p>');
+                    
+                    // Agregar el título al div de la tarea
+                    division1.append(taskTitle);
+                    division1.append(description);
+                    // Agregar el div de la tarea al contenedor
+                    taskDiv.append(division1);
+
+                    let division2 = $('<div class="col-1 task-btn-check p-1 d-flex align-items-center justif-content-center"></div>');
+                    division2.append($(`<div class="btn-group complete-task-btn" data-taskId="`+ task.id+`" role="group" aria-label="Basic checkbox toggle button group">
+                    <input type="checkbox" class="btn-check" id="btncheck`+ task.id+`" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btncheck`+ task.id+`">done</label></div>`));
+                    taskDiv.append(division2);
+                    tasksContainer.append(taskDiv);
+                    let butons_check = document.querySelectorAll('.complete-task-btn');
+                    butons_check.forEach((btn)=>{
+                        btn.addEventListener('click',check)
+                    })
+                }
+            }else{
+                var no_task = $('<h1>No tasks this day!</h1>')
+                tasksContainer.append(no_task);
+            }
+            
+          },
+        error: function(xhr, status, error) {
+            console.log('Error en la solicitud AJAX:', error);
+        }
+    })
+}
+
+function check(event){
+    let target = event.target;
+    var taskId = target.dataset.taskId;
+    console.log(target);   
+    $.ajax({
+        url: '/',
+        type: 'POST',
+        data: {
+            task_id: taskId,
+            csrfmiddlewaretoken: csrfToken,
+            checked: true,
+        },
+        success: function(response) {
+            // Actualizar la visualización de la tarea en la página si es necesario
+            console.log('Tarea marcada como completada' + taskId);
+        },
+        error: function(xhr, status, error) {
+            console.log('Error en la solicitud AJAX:', error);
+        }
+    });
+}
