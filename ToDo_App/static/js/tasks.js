@@ -5,6 +5,9 @@ function create_task(){
     tasks.style.display = "none";
     let btn_task = document.getElementById("btn_task");
     btn_task.style.display = "none";
+    let datepicker = document.querySelector(".datepicker");
+    let date = document.querySelector(".select");
+    datepicker.value = date.dataset.date;
 }
 
 function end_form(){

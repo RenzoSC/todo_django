@@ -11,7 +11,7 @@ def home(request):
     if request.method =='POST' and 'checked' in request.POST and 'task_id' in request.POST:
         task_id = request.POST.get('task_id')
         task = Task.objects.get(id=task_id)
-        task.done = True  # Cambiar el estado de la tarea según sea necesario
+        task.done = not task.done # Cambiar el estado de la tarea según sea necesario
         task.save()
         return redirect(home)
     elif(request.method == 'POST' and 'f_date' in request.POST and not 'read_task' in request.POST):

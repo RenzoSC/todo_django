@@ -33,12 +33,12 @@ function renderCalendar(date){
         for(let j=0; j <7; j++){
             if(cells[x].date.date()== moment().get('date') && cells[x].isInCurrentMonth){
                 selectedDate = cells[x].date.format('YYYY-MM-DD');
-                templateCells += `<div class="col-1 cal-day d-flex justify-content-center align-items-center day-selectable select " data-cell-id="${x}">${cells[x].date.date()}</div>`;
+                templateCells += `<div class="col-1 cal-day d-flex justify-content-center align-items-center day-selectable select " data-cell-id="${x}" data-date="${cells[x].date.format('YYYY-MM-DD')}">${cells[x].date.date()}</div>`;
             }else{
                 if(cells[x].isInCurrentMonth){
-                    templateCells += `<div class="col-1 cal-day d-flex justify-content-center align-items-center day-selectable "data-cell-id="${x}">${cells[x].date.date()}</div>`;
+                    templateCells += `<div class="col-1 cal-day d-flex justify-content-center align-items-center day-selectable "data-cell-id="${x}" data-date="${cells[x].date.format('YYYY-MM-DD')}">${cells[x].date.date()}</div>`;
                 }else{
-                    templateCells += `<div class="col-1 cal-day d-flex justify-content-center align-items-center day-no-selectable "data-cell-id="${x}">${cells[x].date.date()}</div>`;
+                    templateCells += `<div class="col-1 cal-day d-flex justify-content-center align-items-center day-no-selectable "data-cell-id="${x}" data-date="${cells[x].date.format('YYYY-MM-DD')}">${cells[x].date.date()}</div>`;
                 }
             }
             x++;
@@ -143,20 +143,31 @@ function make_petition(selectedDate){
                     taskDiv.append(division1);
 
                     let division2 = $('<div class="col-1 task-btn-check p-1 d-flex align-items-center justif-content-center"></div>');
-                    division2.append($(`<div class="btn-group complete-task-btn" data-taskId="`+ task.id+`" role="group" aria-label="Basic checkbox toggle button group">
-                    <input type="checkbox" class="btn-check" id="btncheck`+ task.id+`" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btncheck`+ task.id+`">done</label></div>`));
+                    if(!task.done){
+                        division2.append($(`<div class="complete-task-btn-container" data-taskid="`+task.id+`">
+                        <label class="complete-task-btn">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        </label>
+                        </div>`));
+                    }else{
+                        division2.append($(`<div class="complete-task-btn-container" data-taskid="`+task.id+`">
+                        <label class="complete-task-btn">
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                        </label>
+                        </div>`));
+                    }
+                    
                     taskDiv.append(division2);
                     tasksContainer.append(taskDiv);
-                    let butons_check = document.querySelectorAll('.complete-task-btn');
-                    butons_check.forEach((btn)=>{
-                        btn.addEventListener('click',check)
-                    })
+                    
                 }
             }else{
                 var no_task = $('<h1>No tasks this day!</h1>')
                 tasksContainer.append(no_task);
             }
+            addClickEventToButtons();
             
           },
         error: function(xhr, status, error) {
@@ -165,9 +176,17 @@ function make_petition(selectedDate){
     })
 }
 
+function addClickEventToButtons() {
+    let buttonsCheck = document.querySelectorAll('.complete-task-btn-container');
+    buttonsCheck.forEach((btn) => {
+        btn.addEventListener('click', check);
+    });
+}
+
+
 function check(event){
-    let target = event.target;
-    var taskId = target.dataset.taskId;
+    let target = event.currentTarget;
+    var taskId = target.dataset.taskid;
     console.log(target);   
     $.ajax({
         url: '/',
