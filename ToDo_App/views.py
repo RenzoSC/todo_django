@@ -13,7 +13,7 @@ def home(request):
         task = Task.objects.get(id=task_id)
         task.done = not task.done # Cambiar el estado de la tarea según sea necesario
         task.save()
-        return redirect(home)
+        return JsonResponse({'success': True, 'task_id': task_id, 'done': task.done})
     elif(request.method == 'POST' and 'f_date' in request.POST and not 'read_task' in request.POST):
         f_date = request.POST['f_date']
         Task.objects.create(title=request.POST['title'], description=request.POST['description'], f_date=f_date)
