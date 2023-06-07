@@ -52,7 +52,7 @@ Si deseas contribuir a este proyecto, sigue estos pasos:
 ## Créditos
 
 - Autor: Renzo Condormango
-- Bibliotecas utilizadas: Django, Bootstrap, moment.js, .
+- Bibliotecas utilizadas: Django, Bootstrap, moment.js
 
 ## Licencia
 
