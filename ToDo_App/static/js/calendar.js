@@ -131,8 +131,8 @@ function make_petition(selectedDate){
             if(response.filtered_tasks.length >=1){
                 for (var i = 0; i < response.filtered_tasks.length; i++) {
                     var task = response.filtered_tasks[i];
-                    let taskDiv = task.done? $(`<div class="task-item row my-3 p-3 overflow-auto justify-content-between checked" id="task-item-`+task.id+`"></div>`) : $(`<div class="task-item row my-3 p-3 overflow-auto justify-content-between" id="task-item-`+task.id+`"></div>`);
-                    let division1 = $('<div class="col-1 flex-grow-1"></div>')
+                    let taskDiv = $(`<div class="task-item row my-3 p-3 overflow-auto justify-content-between" id="task-item-`+task.id+`"></div>`);
+                    let division1 = task.done? $('<div class="col-1 flex-grow-1 checked" ></div>'):$('<div class="col-1 flex-grow-1" ></div>') ;
                     var taskTitle = $('<h3>' + task.title + '</h3>');
                     let description = $('<p>' + task.description +'</p>');
                     
@@ -142,21 +142,23 @@ function make_petition(selectedDate){
                     // Agregar el div de la tarea al contenedor
                     taskDiv.append(division1);
 
-                    let division2 = $('<div class="col-1 task-btn-check p-1 d-flex align-items-center justif-content-center"></div>');
+                    let division2 = $(`<div class="col-1 task-btn-check p-1 d-flex align-items-center justify-content-between flex-column" data-taskid="`+task.id+`"></div>`);
                     if(!task.done){
                         division2.append($(`<div class="complete-task-btn-container" data-taskid="`+task.id+`">
                         <label class="complete-task-btn">
                         <input type="checkbox" onclick="check(event)">
                         <span class="checkmark"></span>
                         </label>
-                        </div>`));
+                        </div>
+                        <button class="eliminate p-0" onclick="eliminate_task(event)">🗑️</button>`));
                     }else{
                         division2.append($(`<div class="complete-task-btn-container" data-taskid="`+task.id+`">
                         <label class="complete-task-btn">
                         <input type="checkbox" checked="checked" onclick="check(event)">
                         <span class="checkmark"></span>
                         </label>
-                        </div>`));
+                        </div>
+                        <button class="eliminate p-0" onclick="eliminate_task(event)">🗑️</button>`));
                     }
                     
                     taskDiv.append(division2);
@@ -197,11 +199,45 @@ function check(event){
         success: function(response) {
             // Actualizar la visualización de la tarea en la página si es necesario
             let x = 'task-item-' + response.task_id;
-            let taskitem = document.getElementById(x);
+            let taskitem = document.querySelector('#' + x + ' > div:first-child');
             if(taskitem.classList.contains('checked')){
                 taskitem.classList.remove('checked');
             }else{
                 taskitem.classList.add('checked');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log('Error en la solicitud AJAX:', error);
+        }
+    });
+}
+
+function eliminate_task(event){
+    event.stopPropagation();
+    let target = event.currentTarget;
+    var taskId = target.parentNode.dataset.taskid;
+    console.log(taskId); 
+    $.ajax({
+        url: '/',
+        type: 'POST',
+        data: {
+            task_id: taskId,
+            csrfmiddlewaretoken: csrfToken,
+            delete: true,
+        },
+        success: function(response) {
+            // Actualizar la visualización de la tarea en la página si es necesario
+            console.log('xd');
+            let x = 'task-item-' + response.task_id;
+            console.log(x);
+            let taskitem = document.getElementById(x);
+            if(taskitem){
+                taskitem.remove();
+            }
+            let task_item_container = document.getElementById('task-items');
+            if (task_item_container.childElementCount === 0) {
+                var no_task = $('<h1>No tasks this day!</h1>')
+                task_item_container.append(no_task)
             }
         },
         error: function(xhr, status, error) {

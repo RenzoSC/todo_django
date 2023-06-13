@@ -14,6 +14,11 @@ def home(request):
         task.done = not task.done # Cambiar el estado de la tarea según sea necesario
         task.save()
         return JsonResponse({'success': True, 'task_id': task_id, 'done': task.done})
+    elif request.method == 'POST' and 'delete' in request.POST and 'task_id' in request.POST:
+        task_id = request.POST.get('task_id')
+        task = Task.objects.get(id=task_id)
+        task.delete()
+        return JsonResponse({'success':True, 'task_id': task_id})
     elif(request.method == 'POST' and 'f_date' in request.POST and not 'read_task' in request.POST):
         f_date = request.POST['f_date']
         Task.objects.create(title=request.POST['title'], description=request.POST['description'], f_date=f_date)

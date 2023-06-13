@@ -94,7 +94,7 @@ body {
 .complete-task-btn {
     display: block;
     position: relative;
-    padding-left: 35px;
+    padding-left: 30px;
     margin-bottom: 12px;
     cursor: pointer;
     font-size: 22px;
@@ -115,8 +115,8 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    height: 25px;
-    width: 25px;
+    height: 25.97px;
+    width: 28px;
     background-color: #eee;
 }
   
@@ -145,9 +145,9 @@ body {
   /* Style the checkmark/indicator */
 .complete-task-btn .checkmark:after {
     left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
+    top: 3px;
+    width: 10px;
+    height: 15px;
     border: solid white;
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
@@ -155,4 +155,8 @@ body {
 
 .checked{
     text-decoration: line-through;
+}
+
+.eliminate{
+    text-decoration: none !important;
 }
