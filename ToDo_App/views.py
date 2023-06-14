@@ -23,8 +23,10 @@ def home(request):
         f_date = request.POST['f_date']
         Task.objects.create(title=request.POST['title'], description=request.POST['description'], f_date=f_date)
         
-        return redirect(home);
-
+        filtered_tasks = list(Task.objects.filter(f_date=f_date))
+        serialized_tasks = [{'title': task.title, 'description': task.description,'done':task.done, 'id':task.id} for task in filtered_tasks]
+        return JsonResponse({'filtered_tasks': serialized_tasks})
+    
     elif request.method == 'POST' and 'f_date' in request.POST and 'read_task' in request.POST:
         f_date = request.POST['f_date']
         
@@ -32,7 +34,6 @@ def home(request):
         serialized_tasks = [{'title': task.title, 'description': task.description,'done':task.done, 'id':task.id} for task in filtered_tasks]
         
         return JsonResponse({'filtered_tasks': serialized_tasks})
-
     return render(request, 'index.html', {
         'form': form,
         })

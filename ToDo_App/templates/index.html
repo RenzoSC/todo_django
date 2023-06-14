@@ -32,11 +32,25 @@
                     </div>
                     <form method="POST" id="task_form">
                         {% csrf_token %}
-                        {{form.as_div}}
-                        <button onclick="end_form()">
+                        <div>
+                            <label for="id_title">Titulo de tarea:</label>
+                            <input type="text" name="title" class="my-custom-class" maxlength="200" required="" id="id_title">
+                        </div>
+
+                        <div>
+                            <label for="id_description">Descripcion de la tarea:</label>
+                            <textarea name="description" cols="40" rows="10" class="my-custom-class" required="" id="id_description"></textarea>
+                        </div>
+
+                        <div>
+                            <label for="id_f_date">Fecha:</label>
+                            <input type="text" name="f_date" class="datepicker" required="" id="id_f_date">
+                        </div>
+
+                        <button onclick="end_form(event)">
                             Save
                         </button>
-                        <button onclick="end_form()">
+                        <button onclick="end_form(event)">
                             Cancel
                         </button>
                     </form>

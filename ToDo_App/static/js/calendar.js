@@ -215,8 +215,7 @@ function check(event){
 function eliminate_task(event){
     event.stopPropagation();
     let target = event.currentTarget;
-    var taskId = target.parentNode.dataset.taskid;
-    console.log(taskId); 
+    var taskId = target.parentNode.dataset.taskid; 
     $.ajax({
         url: '/',
         type: 'POST',
@@ -227,15 +226,13 @@ function eliminate_task(event){
         },
         success: function(response) {
             // Actualizar la visualización de la tarea en la página si es necesario
-            console.log('xd');
             let x = 'task-item-' + response.task_id;
-            console.log(x);
             let taskitem = document.getElementById(x);
             if(taskitem){
                 taskitem.remove();
             }
-            let task_item_container = document.getElementById('task-items');
-            if (task_item_container.childElementCount === 0) {
+            let task_item_container = $('#tasks_items');
+            if (task_item_container.children().length === 0) {
                 var no_task = $('<h1>No tasks this day!</h1>')
                 task_item_container.append(no_task)
             }
