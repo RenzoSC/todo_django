@@ -32,17 +32,17 @@
                     </div>
                     <form method="POST" id="task_form">
                         {% csrf_token %}
-                        <div>
+                        <div class="d-flex flex-column mt-1">
                             <label for="id_title">Titulo de tarea:</label>
                             <input type="text" name="title" class="my-custom-class" maxlength="200" required="" id="id_title">
                         </div>
 
-                        <div>
+                        <div class="d-flex flex-column my-1">
                             <label for="id_description">Descripcion de la tarea:</label>
                             <textarea name="description" cols="40" rows="10" class="my-custom-class" required="" id="id_description"></textarea>
                         </div>
 
-                        <div>
+                        <div class="my-2">
                             <label for="id_f_date">Fecha:</label>
                             <input type="text" name="f_date" class="datepicker" required="" id="id_f_date">
                         </div>
